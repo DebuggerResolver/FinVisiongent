@@ -1,0 +1,14 @@
+requests
+python-dotenv
+yfinance
+assemblyai
+pyaudio
+finnhub-python
+polygon-api-client
+groq
+openchart
+pandas
+mplfinance 
+matplotlib 
+seaborn
+assemblyai[extras]
