@@ -69,7 +69,7 @@ class PredictionAgent(AsyncNode):
         # Retrieves the ticker from the prepared response.
         ticker = shared["stock_symbol"]
         # Constructs the decision key using the ticker.
-        decision_key = f"decision_{ticker}"
+        decision_key = f"decision"
         # Stores the execution results (decision) in the shared dictionary under the decision key.
         shared[decision_key] = exec_res
         # Also store flat fields for easy access
