@@ -12,3 +12,4 @@ mplfinance
 matplotlib 
 seaborn
 assemblyai[extras]
+aiohttp

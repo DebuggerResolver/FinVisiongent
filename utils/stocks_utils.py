@@ -1,4 +1,5 @@
-import requests
+import aiohttp
+import asyncio
 import logging
 import yfinance as yf
 from dotenv import load_dotenv
@@ -13,13 +14,15 @@ class StockHandler:
         self.stock_name=stock_name
         self.symbol=None
         
-    def get_stock_symbol(self):
+    async def get_stock_symbol(self):
         url = "https://connects.torusdigital.com/api/v1/stocks"
         params = {"query": self.stock_name, "page": 1, "limit": 5}
-        response=requests.get(url,params=params)
-        response.raise_for_status()
-        self.symbol= response.json()[0]['nsesymbol'] # + ".NS"
-        return self.symbol
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, params=params) as response:
+                response.raise_for_status()
+                data = await response.json()
+                self.symbol = data[0]['nsesymbol']  # + ".NS"
+                return self.symbol
     
     def get_prev_day_news(self):
         all_news=yf.Ticker(self.stock_name).news
@@ -66,7 +69,8 @@ class StockHandler:
        
     
 if __name__=="__main__":
+    import asyncio
     stock=StockHandler("Tata Consultancy Services")
-    stock.get_stock_symbol()
+    asyncio.run(stock.get_stock_symbol())
     stock.get_prev_day_news()
-    print(stock.get_historical_data())
+    print(stock.get_historical_data(stock.symbol))

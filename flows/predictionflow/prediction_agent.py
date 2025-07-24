@@ -1,21 +1,21 @@
 from typing import Dict, Any
-from utils.pocketflow import Node,Flow
+from utils.pocketflow import AsyncFlow,AsyncNode
 from utils.llm import make_llm_call
 from prompts.prediction_prompt import pred_prompt
 import numpy as np
 
-class PredictionAgent(Node):
+class PredictionAgent(AsyncNode):
 
     def __init__(self, max_retries=2, wait=1):
         super().__init__(max_retries=max_retries, wait=wait)
 
-    def prep(self, shared: Dict[str, Any]):
+    async def prep_async(self, shared: Dict[str, Any]):
         prompt=pred_prompt(shared)
         return prompt
 
 
-    def exec(self, prep_res: Dict[str, Any]) -> Dict[str, Any]:
-        raw_response = make_llm_call(prep_res)
+    async def exec_async(self, prep_res: Dict[str, Any]) -> Dict[str, Any]:
+        raw_response = await make_llm_call(prep_res)
         try:
             recommendation = self._extract_field(raw_response, "Recommendation:")
             position_size_str = self._extract_field(raw_response, "Position Size:")
@@ -65,7 +65,7 @@ class PredictionAgent(Node):
         return text[start:end].strip()
 
     # Post-processing method to store the decision in the shared dictionary.
-    def post(self, shared: Dict[str, Any], prep_res: Any, exec_res: Any):
+    async def post_async(self, shared: Dict[str, Any], prep_res: Any, exec_res: Any):
         # Retrieves the ticker from the prepared response.
         ticker = shared["stock_symbol"]
         # Constructs the decision key using the ticker.
@@ -82,6 +82,6 @@ class PredictionAgent(Node):
 
 
 pred=PredictionAgent()
-flow=Flow(start=pred)
+flow=AsyncFlow(start=pred)
 
 __all__=['flow']
