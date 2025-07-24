@@ -21,6 +21,6 @@ class TextCaptureNode(Node):
             return None
         shared['stock_symbol']=stock_symbol
         shared['current_price']=round(current_price,2)
-        return exec_res
+        
     
 

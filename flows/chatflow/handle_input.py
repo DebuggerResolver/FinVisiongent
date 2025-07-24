@@ -20,11 +20,3 @@ class InputMode(Node):
             return None
         return exec_res
     
-    
-# shared={
-    
-# input_type,
-# stock_name,
-# stock_symbol,
-
-# }

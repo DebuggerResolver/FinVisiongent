@@ -29,7 +29,7 @@ def pred_prompt(shared:dict):
     short_term_reflection = reflection1_insights 
     medium_term_reflection = reflection1_insights 
     market_intelligence = reflection2_insights 
-    json_data = json.dumps(historical_data, indent=2)
+    json_data = json.dumps(historical_data.to_dict(orient="records"), indent=2)
 
     prompt = f"""# The main prompt for the LLM, providing context and instructions for trading decisions.
     As an advanced trading strategy agent for {ticker} stock, analyze the following data to formulate an opportunistic trading decision:

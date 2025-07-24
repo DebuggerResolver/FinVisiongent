@@ -3,7 +3,7 @@ import json
 def historical_prompt(shared):
     s=shared['stock_symbol']
     H_s_t_minus_L_to_t_minus_1 = shared["short_medium_term_data"]
-    json_historical_data = json.dumps(H_s_t_minus_L_to_t_minus_1, indent=2)
+    json_historical_data = json.dumps(H_s_t_minus_L_to_t_minus_1.to_dict(orient='records'), indent=2)
     len_data = len(H_s_t_minus_L_to_t_minus_1)
     return f"""Reflection Agent Prompt (Short/Medium-Term).Analyze this {len_data}-day {s} stock trading data:{json_historical_data}
     Focus on:
